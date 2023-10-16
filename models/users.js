@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 
-const userSchema = mongoose.schema({
+const userSchema = mongoose.Schema({
     email:{
         type:String,
         required : true,
@@ -20,7 +20,7 @@ const userSchema = mongoose.schema({
     },
     
 },{
-    timestamp:true
+    timestamps :true
 })
 
 const User = mongoose.model('User' , userSchema);

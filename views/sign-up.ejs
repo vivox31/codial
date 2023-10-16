@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+</head>
+<body>
+    <center>
+    <h1><%=title%></h1>
+    <form action="/users/create" method="post">
+        <input type="text"  name = "name" placeholder="Full name" required >
+        <input type="email"  name = "email" placeholder="E-mail" required>
+        <input type="password"  name = "password" placeholder="password" required>
+        <input type="password"  name = "confirm-password" placeholder="confirm password" required>
+        <button type="submit">Ragister</button>
+    </center>
+    </form>
+</body>
+</html>

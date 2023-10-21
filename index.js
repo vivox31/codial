@@ -1,9 +1,10 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
 const db = require('./config/mongoose');
-const passport = require('passport')
-const LocalStretegy = require('./config/passport-local-stretegy')
 const session = require('express-session');
+const passport = require('passport')
+const passportLocal = require('./config/passport-local-stretegy')
+const routes = require('./routes/index')
 const port = 8000;
 
 const app = express();
@@ -19,16 +20,26 @@ app.use(session({
     secret:'vishal',
     saveUninitialized:false,
     resave:false,
-
     cookie : {
         maxAge:(1000*60*100),
 
     }
 }));
 
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/' , require('./routes/index'));
+app.use(passport.setAuthenticatedUser)
+app.use('/',routes);
+
+
+
+
+
+
+
+
+
 
 
 app.listen(port ,function(err){

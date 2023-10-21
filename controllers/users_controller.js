@@ -1,25 +1,13 @@
 const User = require('../models/users')
+const routes = require('../routes/index')
 
 
 module.exports.profile = function (req, res) {
 
-    if (req.cookies.user_id) {
-        const checkSignedIn = async () => {
-            const result = await User.findById(req.cookies.user_id).catch((err) => {console.log(err);})
+        return res.render('../views/profile',{
+            title:'profile'
+        })
 
-            if (result) {
-               return res.render('profile', {
-                    title: 'profile page',
-                    user : result
-                })
-            }
-               return res.redirect('/users/sign-in')
-
-        }
-        checkSignedIn();
-    }else{
-        return res.redirect('/users/sign-in');
-    }
 }
 
 module.exports.sign_up = function (req, res) {
@@ -63,35 +51,41 @@ module.exports.create = function (req, res) {
 
 }
 
-module.exports.create_session = function (req,res) {
-    // Todo 
-    // const createSession = async () => {
-    //     const user = await User.findOne({ email: req.body.email }).catch((err) => {
-    //         console.log('error in finding user', err);
-    //         return res.redirect('back')
-    //     });
+// module.exports.create_session = function (req,res) {
+//     // Todo 
+//     // const createSession = async () => {
+//     //     const user = await User.findOne({ email: req.body.email }).catch((err) => {
+//     //         console.log('error in finding user', err);
+//     //         return res.redirect('back')
+//     //     });
 
-    //     if (user) {
+//     //     if (user) {
 
-    //         // check users password
-    //         if (user.password != req.body.password) {
-    //             console.log('password mismatch')
-    //             return res.redirect('/users/sign-in')
-    //         }
+//     //         // check users password
+//     //         if (user.password != req.body.password) {
+//     //             console.log('password mismatch')
+//     //             return res.redirect('/users/sign-in')
+//     //         }
 
-    //         // session creation
-    //         res.cookie('user_id', user.id);
-    //         res.redirect('/users/profile')
-    //     } else {
-    //         console.log('user not found')
-    //         res.redirect('back')
-    //     }
-    // }
-    // createSession();
-    // console.log('function callllll')
-   res.redirect('/')
-    // return res.render('../views/profile',{
-    //     title : 'profile page'
-    // })
+//     //         // session creation
+//     //         res.cookie('user_id', user.id);
+//     //         res.redirect('/users/profile')
+//     //     } else {
+//     //         console.log('user not found')
+//     //         res.redirect('back')
+//     //     }
+//     // }
+//     // createSession();
+//     console.log(req.cookies)
+//     return  res('/')
+//     // return res.render('../views/profile',{
+//     //     title : 'profile page'
+//     // })
+
+// }
+
+
+module.exports.create_session = (req, res) => {
+    res.redirect('/users/profile');
     
 }

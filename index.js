@@ -5,15 +5,31 @@ const session = require('express-session');
 const passport = require('passport')
 const passportLocal = require('./config/passport-local-stretegy')
 const routes = require('./routes/index')
+const MongoStore = require('connect-mongo')
+const ejsLayout = require('express-ejs-layouts');
+const sassMiddleware = require('node-sass-middleware');
 const port = 8000;
 
 const app = express();
+
+// setting up scss middleware
+app.use(sassMiddleware({
+    src : '/assets/scss',
+    dest : '/assets/css',
+    debug:true,
+    outputStyle:'expanded',
+    prefix:'/css'
+    
+}));
 app.use(express.urlencoded());
 app.use(cookieParser());
 
+// setting up view engine
 app.set('view engine' , 'ejs')
 app.set('views' , './views' )
+app.use(express.static('./assets'));
 
+// seeting up session middle ware
 app.use(session({
     name:'codeial',
     // TODO change secrete key before deployement
@@ -21,10 +37,14 @@ app.use(session({
     saveUninitialized:false,
     resave:false,
     cookie : {
-        maxAge:(1000*60*100),
-
-    }
-}));
+        maxAge:(1000*60*100*5),
+    },
+    store:   MongoStore.create({
+        mongoUrl: "mongodb://127.0.0.1:27017/User",
+        // mongoOptions: advancedOptions // See below for details
+      })
+})
+);
 
 
 app.use(passport.initialize());

@@ -1,0 +1,23 @@
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    background: linear-gradient(#3b3bf1, #28367b);
+    padding-left: 15px;
+    font-size: large;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 2px 0px 0p 2px;
+
+    ul{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 20%;
+        list-style-type: none;
+        li a{
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}

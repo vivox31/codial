@@ -10,9 +10,15 @@
 </head>
 <body>
     <%- include('partials/header') %>
+    <h1>Welcome <%=title%></h1>
     <section>
-        <h1>Welcome <%=title%></h1>
-        <p>This is the content of Page 1.</p>
+        <center>
+       <h2>POSTS</h2>
+       <form action="/posts/create" method="post">
+        <textarea name="content"  cols="30" rows="3" placeholder="Type Here"></textarea>
+        <input type="submit" value="Post">
+       </form>
+    </center>
     </section>
     
     <%- include('partials/footer') %>

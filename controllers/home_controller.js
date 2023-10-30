@@ -1,10 +1,14 @@
-
+const Post = require("../models/posts");
 
 module.exports.home = function(req,res){
-    // console.log(req.cookies)
-    // res.cookie('userID', 4566)
-   return res.render('home' , {
-            title:'home'
+    
+
+    Post.find({}).populate('user').exec().then((post)=>{
+        return res.render('home' , {
+            title:'codial | home',
+            posts : post
     })
+    })
+  
 }
 

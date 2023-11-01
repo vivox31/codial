@@ -21,3 +21,21 @@ module.exports.create = function(req,res){
         }
     })
 }
+
+module.exports.destroy = function(req,res){
+    
+    Comment.findById(req.params.id).then((comment)=>{
+        if(comment.user == req.user.id){
+        let postid = comment.post;
+       
+        Post.findByIdAndUpdate(postid , {$pull : {comment : req.params.id}}).then((post)=>{
+
+        })
+        comment.deleteOne();
+        res.redirect('back');
+    }else{
+        res.redirect('back')
+    }
+})
+
+}

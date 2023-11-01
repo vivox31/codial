@@ -1,0 +1,43 @@
+<section>
+    <center>
+        <%if(locals.user) {%>
+        <h2>POSTS</h2>
+        <form action="/posts/create" method="post">
+            <textarea name="content" cols="30" rows="3" placeholder="Type Here"></textarea>
+            <input type="submit" value="Post">
+        </form>
+     
+        
+    </center>
+    <div class="posts-container">
+        <ul>
+            <%for(let post of posts) {%>
+                <li>
+                    <%if(locals.user.id == post.user.id) {%>
+                        <a href="/posts/destroy/<%=post.id%>">delete</a>
+                        <%}%>
+                    <p>
+                    <%=post.content%>
+                    <br>
+                    <small><%=post.user.name%></small>
+                    <form action="/comments/create" method="post">
+                        <input type="text" name="content" placeholder="Add comment here..." required="true">
+                        <input type="hidden" name="post" value='<%=post._id%>'>
+                        <input type="submit" value="ADD">
+                    </form>
+                    <%for(comment of post.comment){%>
+                        <p>
+                            <%if(locals.user.id == comment.user.id) {%>
+                                <a href="/comments/destroy/<%=comment.id%>">delete</a>
+                                <%}%>
+                            <li><%=comment.content%></li>
+                            <li><%=comment.user.name%></li>
+                        </p>
+                        <%}%>
+                </p>
+                </li>
+                <%}%>
+        </ul>
+    </div>
+    <%}%>
+

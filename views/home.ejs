@@ -11,39 +11,17 @@
 
 <body>
     <%- include('partials/header') %>
-        <h1><%=title%></h1>
-        <section>
-            <center>
-                <%if(locals.user) {%>
-                <h2>POSTS</h2>
-                <form action="/posts/create" method="post">
-                    <textarea name="content" cols="30" rows="3" placeholder="Type Here"></textarea>
-                    <input type="submit" value="Post">
-                </form>
-             
-                
-            </center>
-            <div class="posts-container">
-                <ul>
-                    <%for(let post of posts) {%>
-                        <li>
-                            <p>
-                            <%=post.content%>
-                            <br>
-                            <small><%=post.user.name%></small>
-                            <form action="/comments/create" method="post">
-                                <input type="text" name="content" placeholder="Add comment here...">
-                                <input type="hidden" name="post" value='<%=post._id%>'>
-                                <input type="submit" value="ADD">
-                            </form>
-                        </p>
-                        </li>
-                        <%}%>
-                </ul>
-            </div>
-            <%}%>
-        </section>
+        
+    <%- include('partials/posts.ejs') %>
 
+    <section>
+        <h1>Friends</h1>
+        <%for(u of all_users){%>
+            <p style="margin-left:5px ;">
+            <a href="users/profile/<%=u.id%>"><%=u.name%></a>
+        </p>
+        <%}%>
+    </section>
         <%- include('partials/footer') %>
 </body>
 

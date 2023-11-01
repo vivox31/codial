@@ -4,9 +4,15 @@ const routes = require('../routes/index')
 
 module.exports.profile = function (req, res) {
 
-        return res.render('../views/profile',{
-            title:'profile'
+        User.findById(req.params.id).then((user)=>{
+            return res.render('../views/profile',{
+                title:'profile',
+                profile_user : user
+            })
         })
+
+
+        
 
 }
 
@@ -93,9 +99,9 @@ module.exports.create = function (req, res) {
 
 
 module.exports.create_session = (req, res) => {
-    res.redirect('/users/profile');
-    
+    res.redirect('/');
 }
+
 
 
 module.exports.destroySession = function(req,res){

@@ -6,10 +6,12 @@ const passport = require('passport')
 const passportLocal = require('./config/passport-local-stretegy')
 const routes = require('./routes/index')
 const MongoStore = require('connect-mongo')
-// const ejsLayout = require('express-ejs-layouts');
+const ejsLayout = require('express-ejs-layouts');
 const sassMiddleware = require('node-sass-middleware');
-const port = 8000;
 const path = require('path')
+const flash = require('connect-flash')
+const customMware = require('./config/middleware')
+const port = 8000;
 
 const app = express();
 
@@ -22,6 +24,7 @@ app.use(sassMiddleware({
     prefix:'/css',
     
 }));
+
 app.use(express.urlencoded());
 app.use(cookieParser());
 
@@ -30,7 +33,9 @@ app.use(cookieParser());
 app.set('view engine' , 'ejs')
 app.set('views' , './views' )
 app.use(express.static('./assets'));
-
+app.use(ejsLayout);
+app.set('layout' , 'layout.ejs')
+app.set("layout extractScripts", true)
 
 // seeting up session middle ware
 app.use(session({
@@ -49,9 +54,12 @@ app.use(session({
 })
 );
 
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser)
+app.use(flash());
+app.use(customMware.setflash);
 app.use('/',routes);
 
 

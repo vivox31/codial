@@ -11,18 +11,18 @@ module.exports.create = function(req,res){
     res.redirect('back')
 }
 
-module.exports.destroy = function(req,res){
-    Post.findById(req.params.id).then((post)=>{
+module.exports.destroy = async function(req,res){
+
+   let post = await Post.findById(req.params.id)
         if(post.user == req.user.id){
-            post.deleteOne().then(()=>{
-                Comment.deleteMany({post:req.params.id}).then(()=>{
-                    res.redirect('back')
-                });
-            })
+
+           await post.deleteOne();
+           await Comment.deleteMany({post:req.params.id})
+            res.redirect('back')
             
         }else{
             res.redirect('back')
         }
-    })
+    
     
 }

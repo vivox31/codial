@@ -2,3 +2,21 @@ body{
     margin: 0px;
     padding: 0px;
 }
+
+#homepage-container{
+    display: flex;
+    justify-content:space-between;
+    height: 100vh;
+    #feed-posts{
+        width: 70%;
+    }
+    #friends-section{
+        width: 30%;
+        padding: 5px;
+        border-left: 1px solid lightgray;
+        a{
+            text-decoration: none;
+            color: black;
+        }
+    }
+}

@@ -11,6 +11,8 @@ routes.post('/create', users_controller.create);
 routes.post('/create-session',passport.authenticate('local',{failureRedirect: '/users/sign-up', }), users_controller.create_session);
 routes.get('/sign-out' , users_controller.destroySession);
 
+routes.post('/updates/:id', passport.checkAuthentication,users_controller.update);
+
     
 module.exports = routes
 

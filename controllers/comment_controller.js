@@ -1,15 +1,15 @@
 const Comment = require("../models/comments");
-const Post  =  require('../models/posts')
+const Post = require('../models/posts')
 
-module.exports.create = function(req,res){
+module.exports.create = function (req, res) {
 
-    Post.findById(req.body.post).then((post)=>{
-        if(post){
-            const creatingcomment = async()=>{
+    Post.findById(req.body.post).then((post) => {
+        if (post) {
+            const creatingcomment = async () => {
                 const newcomment = await new Comment({
-                    content:req.body.content,
-                    user : req.user._id,
-                    post : req.body.post
+                    content: req.body.content,
+                    user: req.user._id,
+                    post: req.body.post
                 })
 
                 newcomment.save();
@@ -22,20 +22,17 @@ module.exports.create = function(req,res){
     })
 }
 
-module.exports.destroy = function(req,res){
-    
-    Comment.findById(req.params.id).then((comment)=>{
-        if(comment.user == req.user.id){
-        let postid = comment.post;
-       
-        Post.findByIdAndUpdate(postid , {$pull : {comment : req.params.id}}).then((post)=>{
+module.exports.destroy = async function (req, res) {
 
-        })
-        comment.deleteOne();
+    let comment = await Comment.findById(req.params.id)
+    if (comment.user == req.user.id) {
+        let postid = comment.post;
+
+        await Post.findByIdAndUpdate(postid, { $pull: { comment: req.params.id } });
+        await comment.deleteOne();
         res.redirect('back');
-    }else{
+    } else {
         res.redirect('back')
     }
-})
 
 }

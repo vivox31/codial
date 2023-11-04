@@ -4,13 +4,14 @@ const User = require('../models/users');
 passport.initialize();
 
 passport.use(new LocalStretegy({
-    usernameField: 'email'
+    usernameField: 'email',
+    passReqToCallback: true
 },
-    function (email, password, done) {
+    function (req,email, password, done) {
       
         User.findOne({email : email}).then((user)=>{
             if (!user || user.password != password) {
-                        console.log('incorrect username/password');
+                        req.flash('error', 'incorrect username/password')
                         return done(null, false);
                     }
         
@@ -24,6 +25,8 @@ passport.use(new LocalStretegy({
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
+    
+    
 })
 
 passport.deserializeUser(function (id, done) {

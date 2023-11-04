@@ -8,6 +8,7 @@ module.exports.create = function(req,res){
         
     }  
     createNewPost();
+    req.flash('success', 'post created')
     res.redirect('back')
 }
 
@@ -18,9 +19,11 @@ module.exports.destroy = async function(req,res){
 
            await post.deleteOne();
            await Comment.deleteMany({post:req.params.id})
+           req.flash('success' , 'post deleted')
             res.redirect('back')
             
         }else{
+            req.flash('error', "you can't delete this post!!")
             res.redirect('back')
         }
     

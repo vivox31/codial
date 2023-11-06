@@ -4,7 +4,7 @@ const Comment = require('../models/comments')
 module.exports.create = async function (req, res) {
 
     try {
-        let newpost = await new Post({ content: req.body.content, user: req.user._id });
+        let newpost = await new Post({ content: req.body.content, user: req.user._id }).populate('user');
         newpost.save();
 
         if (req.xhr) {

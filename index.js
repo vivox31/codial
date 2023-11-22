@@ -12,7 +12,6 @@ const path = require('path')
 const flash = require('connect-flash')
 const customMware = require('./config/middleware')
 const port = 8000;
-
 const app = express();
 
 // setting up scss middleware
@@ -36,6 +35,7 @@ app.use(express.static('./assets'));
 app.use(ejsLayout);
 app.set('layout' , 'layout.ejs')
 app.set("layout extractScripts", true)
+app.use('/uploads',express.static(__dirname + '/uploads'));
 
 // seeting up session middle ware
 app.use(session({
@@ -61,6 +61,8 @@ app.use(passport.setAuthenticatedUser)
 app.use(flash());
 app.use(customMware.setflash);
 app.use('/',routes);
+app.use('/api',require('./routes/api/index'));
+
 
 
 

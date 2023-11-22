@@ -1,5 +1,7 @@
 const User = require('../models/users')
 const routes = require('../routes/index')
+const fs = require('fs');
+const path = require('path');
 
 
 module.exports.profile = function (req, res) {
@@ -10,10 +12,7 @@ module.exports.profile = function (req, res) {
                 profile_user : user,
                 
             })
-        })
-
-
-        
+        })       
 
 }
 
@@ -87,12 +86,35 @@ module.exports.destroySession = function(req,res){
 
 }
 
-module.exports.update = function(req,res){
+module.exports.update = async function(req,res){
     if(req.user.id == req.params.id){
-    User.findByIdAndUpdate(req.params.id, req.body).then(()=>{
+//    await User.findByIdAndUpdate(req.params.id, req.body).then(()=>{
+//         res.redirect('back');
+//     })
+try{
+    const user = await User.findById(req.params.id);
+    User.uploadedAvatar(req,res ,function(err){
+        if(err){
+            console.log(err)
+        }
+        user.name = req.body.name;
+        user.email = req.body.email;
+        if(req.file){
+            if(user.avatar){
+                 fs.unlinkSync(path.join(__dirname,"..",user.avatar));
+            }
+            user.avatar = User.avatarPath + '/' + req.file.filename;
+        }
+        user.save();
         res.redirect('back');
     })
+
+}catch(err){
+    console.log(err);
+    res.redirect('back');
+}
 }else{
     res.status(401).send('unorthorized');
+    res.redirect('back');
 }
 }

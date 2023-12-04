@@ -12,6 +12,8 @@ routes.post('/create-session',passport.authenticate('local',{failureRedirect: '/
 routes.get('/sign-out' , users_controller.destroySession);
 
 routes.post('/updates/:id', passport.checkAuthentication,users_controller.update);
+routes.get('/Auth/google', passport.authenticate('google',{scope:['profile','email']}));
+routes.get('/Auth/google/callback' , passport.authenticate('google',{failureRedirect : '/users/sign-in'}),users_controller.create_session);
 
     
 module.exports = routes

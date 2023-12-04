@@ -5,6 +5,8 @@ const session = require('express-session');
 const passport = require('passport')
 const passportLocal = require('./config/passport-local-stretegy')
 const passportJWT = require('./config/passport-jwt-stretegy')
+const passportGoogle = require('./config/passport-google-outh2-stretegy');
+
 const routes = require('./routes/index')
 const MongoStore = require('connect-mongo')
 const ejsLayout = require('express-ejs-layouts');

@@ -1,17 +1,24 @@
+<center>
+    <div id="profile-picture">
+        <img src="<%=profile_user.avatar%>" width="100" alt="<%=profile_user.name%>">
 
-    <img src="<%=profile_user.avatar%>" width="100" alt="<%=profile_user.name%>">
-    <%if(locals.user.id==profile_user.id) {%>
-        <form action="/users/updates/<%=user.id%>" method="post" enctype="multipart/form-data">
-            <input type="text" name="name" value="<%=user.name%>" required="true">
-            <input type="email" name="email" value="<%=user.email%>" required="true">
-            <input type="file" name="avatar" placeholder="profile picture">
-            <input type="submit" value="submit" >
-        </form>
-        <%}else {%>
-            <p>
-                <%=profile_user.email%>
-            </p>
-            <p>
-                <%=profile_user.name%>
-            </p>
-            <%}%>
+    </div>
+</center>
+
+<%if(locals.user.id==profile_user.id) {%>
+    <div id="update-form">
+    <form action="/users/updates/<%=user.id%>" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" value="<%=user.name%>" required="true">
+        <input type="email" name="email" value="<%=user.email%>" required="true">
+        <input type="file" name="avatar" placeholder="profile picture">
+        <input type="submit" value="submit">
+    </form>
+    </div>
+    <%}else {%>
+        <p>
+            <%=profile_user.email%>
+        </p>
+        <p>
+            <%=profile_user.name%>
+        </p>
+        <%}%>

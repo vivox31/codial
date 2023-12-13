@@ -3,11 +3,12 @@ const Post = require('../models/posts')
 const commentmailer = require('../mailers/comment-mailer');
 const commentEmailWorker = require('../workers/comment-email-worker');
 const queue = require('../config/kue');
+const Like = require('../models/like')
 
 
-module.exports.create = function (req, res) {
+module.exports.create = async function (req, res) {
 
-    Post.findById(req.body.post).then((post) => {
+   await  Post.findById(req.body.post).then((post) => {
         if (post) {
             const creatingcomment = async () => {
                 let newcomment = await new Comment({
@@ -51,7 +52,12 @@ module.exports.destroy = async function (req, res) {
     if (comment.user == req.user.id) {
         let postid = comment.post;
 
+        //deleting all likes associated to that comment
+        await Like.deleteMany({likable:comment._id,onmodel:'comment'});
+
+        //removing comment from list of comments of a post
         await Post.findByIdAndUpdate(postid, { $pull: { comment: req.params.id } });
+
         await comment.deleteOne();
         req.flash('success', 'comment removed')
         if(req.xhr){

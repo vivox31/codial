@@ -20,3 +20,15 @@ body{
         }
     }
 }
+#posts-list-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+    overflow: auto;
+    border: 1px solid grey;
+    margin-top: 5%;
+    li{
+        list-style-type: none;
+    }
+}

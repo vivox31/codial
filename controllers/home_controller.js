@@ -11,7 +11,7 @@ try{
                 path: 'user'
             }
         }).exec()
-
+        //TODO populate the likes of a post
     let user = await User.find({})
 
     return res.render('home', {

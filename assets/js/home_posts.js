@@ -1,6 +1,6 @@
 {
 const createpost = function () {
-    console.log('vishall')
+    // console.log('vishall')
     newform = $('#new-post-form')
 
     newform.submit((e) => {
@@ -13,6 +13,7 @@ const createpost = function () {
                 let postitem = newpost(data.data.post);
                 $('#posts-list-container>ul').prepend(postitem);
                 deletepost($(' .delete-post-button', postitem));
+                new ToggleLike($(' .toggle-like-btn',postitem));
                 new Noty({
                     theme: 'relax',
                     text: "Post created!",
@@ -32,25 +33,41 @@ const createpost = function () {
 
     function newpost(post) {
 
-        return $(`
-    <li id="post-${post._id}">
-        
-        <a href="/posts/destroy/${post._id}" class="delete-post-button">delete</a>
+        return $(
+        `<li id="post-${post._id}">
+        <div class="card">
             
-        <p>
-        ${post.content}
-        <br>
-        <small>${post.user.name}</small>
-        <form action="/comments/create" method="post" id="comment-form">
-            <input type="text" name="content" placeholder="Add comment here..." required="true">
-            <input type="hidden" name="post" value='${post._id}'>
-            <input type="submit" value="ADD">
-        </form>
-        <div id="comment-list">
-        </div>
-        </p>
-    </li>`)
+            <a class="toggle-like-btn" data-likes="0" href="/likes/toggle/?id=${post._id}&type=Post">
+            <span style="position: absolute;right: 120%;"> ${post.likes.length}</span>
+            <i class="fa-regular fa-heart"></i> 
+             </a>
+           
+         <a href="/posts/destroy/${post._id}"class="delete-post-button">X</a>
+
+            <div class="user-info">
+        
+
+
+              <h2>${post.user.name}</h2>
+            </div>
+            <p class="user-text">${post.content}</p>
+            <form action="/comments/create" method="post"id= "comment-form">
+                <input type="text" name="content" placeholder="Add comment here..." required="true">
+                <input type="hidden" name="post" value='${post._id}'>
+                <input type="submit" value="ADD">
+            </form>
+            <div class="comments">
+              
+              <ul>
+                  
+              </ul>
+              
+            </div>
+          </div>
+        </li>`)
     }
+
+    
 
 
 }
@@ -98,3 +115,5 @@ converttoAjax();
 
     
 }
+
+

@@ -1,10 +1,11 @@
 const Post = require('../models/posts');
 const Comment = require('../models/comments')
+const Like = require('../models/like')
 
 module.exports.create = async function (req, res) {
 
     try {
-        let newpost = await new Post({ content: req.body.content, user: req.user._id }).populate('user');
+        let newpost = (await new Post({ content: req.body.content, user: req.user._id }).populate('user'));
         newpost.save();
 
         if (req.xhr) {
@@ -29,7 +30,12 @@ module.exports.destroy = async function (req, res) {
     let post = await Post.findById(req.params.id)
     if (post.user == req.user.id) {
 
+        //deleting all the likes associated to post and its comments
+        await Like.deleteMany({likable: post,onmodel:'post'});
+        await Like.deleteMany({_id: {$in: post.comments}});
+
         await post.deleteOne();
+        
         await Comment.deleteMany({ post: req.params.id })
 
         if (req.xhr) {

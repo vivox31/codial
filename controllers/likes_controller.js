@@ -1,45 +1,67 @@
-const Like = require('../models/like');
-const Post = require('../models/posts');
+
+
+const Like = require("../models/like");
+const Post =  require("../models/posts");
 const Comment = require('../models/comments');
 
 
-module.exports.toggleLike = async function(req,res){
-    // req = /likes/toggle/?id=abcd&type=post
+module.exports.toggleLike = async function(req, res){
+    try{
 
-    let likeable;
-    let deleted = false;
-    if(req.query.type = 'post'){
-        likeable = await Post.findById(req.query.id).populate('likes'); 
-    }else{
-        likeable = await Comment.findById(req.query.id).populate('likes');
-    }
+        // likes/toggle/?id=abcdef&type=Post
+        let likeable;
+        let deleted = false;
 
-    let exitstinglike = Like.findOne({
-        likeable:req.query.id,
-        onmodel:req.query.id
-    })
 
-    if(exitstinglike){
-        likeable.likes.pull(exitstinglike._id);
-        likeable.save();
-        exitstinglike.deleteOne();
-        deleted = true;
-    }else{
-        const newlike = new Like({
-            user:req.user,
-            likeable:req.query.id,
-            onmodel:req.query.type,
-        })
-        newlike.save();
-        likeable.likes.push(newlike._id);
-    }
-
-    return res.json(200,{
-        message:'like added successfully',
-        data :{
-            deleted:deleted
+        if (req.query.type == 'Post'){
+            likeable = await Post.findById(req.query.id).populate('likes');
+        }else{
+            likeable = await Comment.findById(req.query.id).populate('likes');
         }
-    })
+
+        console.log(likeable)
+
+        // check if a like already exists
+        let existingLike = await Like.findOne({
+            likeable: req.query.id,
+            onModel: req.query.type,
+            user: req.user._id
+        })
+
+        // if a like already exists then delete it
+        if (existingLike){
+            likeable.likes.pull(existingLike._id);
+            likeable.save();
+            existingLike.deleteOne();
+            deleted = true;
+
+        }else{
+            // else make a new like
+
+            let newLike = await new Like({
+                user: req.user._id,
+                likeable: req.query.id,
+                onModel: req.query.type
+            });
+            newLike.save()
+            likeable.likes.push(newLike._id);
+            likeable.save();
+
+        }
+
+        return res.json(200, {
+            message: "Request successful!",
+            data: {
+                deleted: deleted
+            }
+        })
 
 
+
+    }catch(err){
+        console.log(err);
+        return res.json(500, {
+            message: 'Internal Server Error'
+        });
+    }
 }

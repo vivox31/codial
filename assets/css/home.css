@@ -24,15 +24,16 @@ body {
   color: black;
 }
 
-#posts-list-container{
+#posts-list-container {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  border: 1px solid gray;
-  margin-top: 5%;
+  align-items: center;
   height: 70vh;
   overflow: auto;
+  border: 1px solid grey;
+  margin-top: 5%;
 }
-#posts-list-container li{
+
+#posts-list-container li {
   list-style-type: none;
 }

@@ -2,9 +2,21 @@
 
 <li id="post-<%=post._id%>">
 <div class="card">
-    <%if(locals.user.id == post.user.id) {%>
-        <a href="/posts/destroy/<%=post.id%>"class="delete-post-button">delete</a>
-        <%}%>
+  <%if(locals.user.id == post.user.id) {%>
+    <a href="/posts/destroy/<%=post.id%>"class="delete-post-button">X</a>
+    <%}%>
+
+
+ <% if(locals.user){%>
+  <a data-likes="<%=post.likes.length%>" class="toggle-like-btn" href="/likes/toggle/?id=<%=post._id%>&type=Post">
+    <span style="position: absolute;right: 120%;"> <%=post.likes.length%></span>
+    <i class="fa-regular fa-heart"></i>
+  </a>
+  <%}%>
+
+  
+
+        
         
     <div class="user-info">
       <h2><%=post.user.name%></h2>

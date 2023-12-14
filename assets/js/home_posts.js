@@ -23,6 +23,7 @@ const createpost = function () {
                     
                 }).show();
                 // console.log(data.data.post);
+                (newform)[0].reset();
             },
             error: function (status, error) {
                 console.log(status);

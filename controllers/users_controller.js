@@ -104,6 +104,7 @@ try{
                  fs.unlinkSync(path.join(__dirname,"..",user.avatar));
             }
             user.avatar = User.avatarPath + '/' + req.file.filename;
+            
         }
         user.save();
         res.redirect('back');
